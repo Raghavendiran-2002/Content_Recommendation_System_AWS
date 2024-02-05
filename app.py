@@ -7,16 +7,18 @@ from flask import Flask, request, render_template, jsonify
 
 
 def createSimilarity():
-    data = pd.read_csv('main_data.csv') # reading the dataset
+    data = pd.read_csv('main_data.csv')  # reading the dataset
     cv = CountVectorizer()
     countMatrix = cv.fit_transform(data['comb'])
-    similarity = cosine_similarity(countMatrix) # creating the similarity matrix
+    # creating the similarity matrix
+    similarity = cosine_similarity(countMatrix)
     return (data, similarity)
 
 
 def getAllMovies():
     data = pd.read_csv('main_data.csv')
     return list(data['movie_title'].str.capitalize())
+
 
 def Recommend(movie):
     movie = movie.lower()
@@ -31,7 +33,8 @@ def Recommend(movie):
         movieIndex = data.loc[data['movie_title'] == movie].index[0]
         lst = list(enumerate(similarity[movieIndex]))
         lst = sorted(lst, key=lambda x: x[1], reverse=True)
-        lst = lst[1:20]  # excluding first item since it is the requested movie itself and taking the top20 movies
+        # excluding first item since it is the requested movie itself and taking the top20 movies
+        lst = lst[1:20]
         movieList = []
         for i in range(len(lst)):
             a = lst[i][0]
@@ -42,6 +45,7 @@ def Recommend(movie):
 app = Flask(__name__, static_folder='movie-recommender-app/build',
             static_url_path='/')
 CORS(app)
+
 
 @app.route('/api/movies', methods=['GET'])
 @cross_origin()
@@ -78,5 +82,6 @@ def similarity(name):
 def not_found(e):
     return send_from_directory(app.static_folder, 'index.html')
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
