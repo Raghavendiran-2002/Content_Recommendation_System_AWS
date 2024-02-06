@@ -4,20 +4,30 @@ from flask_cors import CORS, cross_origin
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from flask import Flask, request, render_template, jsonify
+import mysql.connector as mysql
+
+conn = mysql.connect(user='root', password='honda4104', auth_plugin='mysql_native_password',
+                     host='127.0.0.1', database='movies')
+cursor = conn.cursor()
 
 
 def createSimilarity():
-    data = pd.read_csv('main_data.csv')
+    fetchComb = "Select comb from movie_recommendation;"
+    cursor.execute(fetchComb)
+    comb = cursor.fetchall()
+    data = pd.read_sql(fetchComb, conn)
     cv = CountVectorizer()
     countMatrix = cv.fit_transform(data['comb'])
-    # creating the similarity matrix
     similarity = cosine_similarity(countMatrix)
     return (data, similarity)
 
 
 def getAllMovies():
-    data = pd.read_csv('main_data.csv')
-    return list(data['movie_title'].str.capitalize())
+    createTB = "Select movie_title from movie_recommendation;"
+    cursor.execute(createTB)
+    fetchmovies = cursor.fetchall()
+    movies = pd.read_sql(createTB, conn)
+    return list(movies['movie_title'].str.capitalize())
 
 
 def Recommend(movie):
@@ -56,12 +66,6 @@ def movies():
     return jsonify(result)
 
 
-@app.route('/')
-@cross_origin()
-def serve():
-    return send_from_directory(app.static_folder, 'index.html')
-
-
 @app.route('/api/similarity/<name>')
 @cross_origin()
 def similarity(name):
@@ -84,4 +88,4 @@ def not_found(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    app.run(debug=True, host='0.0.0.0')

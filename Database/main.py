@@ -3,7 +3,7 @@ import mysql.connector as mysql
 import os
 from dotenv import load_dotenv
 from pathlib import Path
-DEPLOYMENT = "lcoal"
+DEPLOYMENT = "local"
 
 
 dotenv_path = Path('.env.local') if (
