@@ -1,6 +1,6 @@
 # Content_Recommendation_System_AWS
 
-## Setup AWS RDS (MYSQL)
+## Setup AWS RDS (MYSQL) and insert data into DB
 
 1. Fill up the following
 
