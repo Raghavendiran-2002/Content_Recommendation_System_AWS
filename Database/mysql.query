@@ -1,0 +1,23 @@
+show databases;
+
+use movies;
+show tables;
+
+select * from movie_recommendation;
+
+CREATE TABLE IF NOT EXISTS movie_recommendation(director_name LONGTEXT, actor_1_name LONGTEXT, actor_2_name LONGTEXT, actor_3_name LONGTEXT, genres LONGTEXT, movie_title LONGTEXT, comb LONGTEXT);
+drop table movie_recommendation;
+
+INSERT INTO movie_recommendation (director_name, actor_1_name, actor_2_name, actor_3_name,genres,movie_title,comb) VALUES ("fsdf", "fsdfg", "fdsf", "fdsaf", "et", "et","htg");
+
+INSERT INTO movie_recommendation (director_name, actor_1_name, actor_2_name, actor_3_name,genres,movie_title,comb) VALUES ("James Cameron","CCH Pounder","Joel David Moore", "Wes Studi","Action Adventure Fantasy Sci-Fi", "avatar","CCH Pounder Joel David Moore Wes Studi James Cameron Action Adventure Fantasy Sci-Fi");
+
+
+create database importcsvdata;
+create database movies;
+SHOW VARIABLES LIKE '%ssl%';
+use movies;
+show tables;
+drop table movie_recommendation;
+select * from movie_recommendation;
+select count(director_name) from movie_recommendation;

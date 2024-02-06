@@ -7,7 +7,7 @@ from flask import Flask, request, render_template, jsonify
 
 
 def createSimilarity():
-    data = pd.read_csv('main_data.csv')  # reading the dataset
+    data = pd.read_csv('main_data.csv')
     cv = CountVectorizer()
     countMatrix = cv.fit_transform(data['comb'])
     # creating the similarity matrix
