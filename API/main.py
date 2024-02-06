@@ -12,10 +12,8 @@ cursor = conn.cursor()
 
 
 def createSimilarity():
-    fetchComb = "Select comb from movie_recommendation;"
-    cursor.execute(fetchComb)
-    comb = cursor.fetchall()
-    data = pd.read_sql(fetchComb, conn)
+    createTB = "SELECT * FROM movie_recommendation;"
+    data = pd.read_sql(createTB, conn)
     cv = CountVectorizer()
     countMatrix = cv.fit_transform(data['comb'])
     similarity = cosine_similarity(countMatrix)
@@ -23,9 +21,7 @@ def createSimilarity():
 
 
 def getAllMovies():
-    createTB = "Select movie_title from movie_recommendation;"
-    cursor.execute(createTB)
-    fetchmovies = cursor.fetchall()
+    createTB = "SELECT movie_title FROM movie_recommendation;"
     movies = pd.read_sql(createTB, conn)
     return list(movies['movie_title'].str.capitalize())
 
@@ -37,6 +33,7 @@ def Recommend(movie):
         similarity.shape
     except:
         (data, similarity) = createSimilarity()
+    print(data)
     if movie not in data['movie_title'].unique():
         return 'Sorry! The movie you requested is not present in our database.'
     else:
@@ -60,7 +57,6 @@ CORS(app)
 @app.route('/api/movies', methods=['GET'])
 @cross_origin()
 def movies():
-    # returns all the movies in the dataset
     movies = getAllMovies()
     result = {'arr': movies}
     return jsonify(result)
