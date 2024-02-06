@@ -5,9 +5,20 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from flask import Flask, request, render_template, jsonify
 import mysql.connector as mysql
+import os
+from dotenv import load_dotenv
+from pathlib import Path
+DEPLOYMENT = "local"
 
-conn = mysql.connect(user='root', password='honda4104', auth_plugin='mysql_native_password',
-                     host='127.0.0.1', database='movies')
+dotenv_path = Path('.env.local') if (
+    DEPLOYMENT == "local") else Path('.env.prod'
+                                     )
+load_dotenv(dotenv_path=dotenv_path)
+
+conn = mysql.connect(user=os.getenv('DBUSER'), password=os.getenv('DBPASS'), auth_plugin='mysql_native_password',
+                     host=os.getenv('DBHOST'), database=os.getenv('DATABASE'))
+
+
 cursor = conn.cursor()
 
 
@@ -84,4 +95,4 @@ def not_found(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=5050)
