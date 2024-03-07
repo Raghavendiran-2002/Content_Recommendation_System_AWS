@@ -11,8 +11,10 @@ dotenv_path = Path('.env.local') if (
                                      )
 load_dotenv(dotenv_path=dotenv_path)
 
-conn = mysql.connect(user=os.getenv('DBUSER'), password=os.getenv('DBPASS'), auth_plugin='mysql_native_password',
-                     host=os.getenv('DBHOST'), database=os.getenv('DATABASE'))
+# conn = mysql.connect(user=os.getenv('DBUSER'), password=os.getenv('DBPASS'), auth_plugin='mysql_native_password',
+#                      host=os.getenv('DBHOST'), database=os.getenv('DATABASE'))
+conn = mysql.connect(user="root", password="honda4104", auth_plugin='mysql_native_password',
+                     host="192.168.1.200", database="movies")
 
 cursor = conn.cursor()
 createTB = "CREATE TABLE IF NOT EXISTS movie_recommendation(director_name LONGTEXT, actor_1_name LONGTEXT, actor_2_name LONGTEXT, actor_3_name LONGTEXT, genres LONGTEXT, movie_title LONGTEXT, comb LONGTEXT);"
