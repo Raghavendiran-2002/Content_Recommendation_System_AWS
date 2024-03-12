@@ -11,3 +11,9 @@
    ```shell
    $ python app.py
    ```
+
+
+### Run 
+```
+pm2 start <file>
+```

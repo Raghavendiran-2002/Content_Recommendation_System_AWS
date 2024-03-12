@@ -1,6 +1,7 @@
 // This is the movie card component
 import "./styles/Card.css";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 const MovieCard = ({ movie }) => {
     const navigate = useNavigate();
 

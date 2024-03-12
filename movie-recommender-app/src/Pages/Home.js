@@ -4,7 +4,7 @@ import Footer from "./Components/Footer";
 import "./Components/styles/HomeStyles.css";
 import MovieCard from "./Components/MovieCard";
 import { useEffect, useState } from "react";
-
+import React from "react";
 const Home = () => {
   const apiKey = "api_key=b97316ed479ee4226afefc88d1792909";
   const [list, setList] = useState([]);

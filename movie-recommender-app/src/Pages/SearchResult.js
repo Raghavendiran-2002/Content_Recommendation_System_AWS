@@ -4,6 +4,7 @@ import "./Components/styles/SearchResultsStyles.css";
 import MovieCard from "./Components/MovieCard";
 import NavBar from "./Components/NavBar";
 import ReactPlayer from "react-player";
+import React from "react";
 import Footer from "./Components/Footer";
 
 const SearchResult = () => {
