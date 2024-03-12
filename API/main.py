@@ -27,7 +27,7 @@ def createSimilarity():
     createTB = "SELECT * FROM movie_recommendation;"
     data = pd.read_sql(createTB, conn)
     cv = CountVectorizer()
-    countMatrix = cv.fit_transform(data['comb'])
+    countMatrix = cv.fit_transform(data['genres'])
     similarity = cosine_similarity(countMatrix)
     return (data, similarity)
 
