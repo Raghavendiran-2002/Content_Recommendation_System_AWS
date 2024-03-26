@@ -1,17 +1,8 @@
-# syntax=docker/dockerfile:1.4
-FROM python:3.10-alpine AS builder
-
+FROM python:3.9-slim-buster AS builder
 WORKDIR /code
-COPY requirements.txt /code
-RUN pip3 install -r requirements.txt
+ADD . /code
+RUN pip3 install --no-cache-dir -r requirements.txt
+EXPOSE 5000
+CMD ["python", "main.py"]
 
-COPY . .
 
-ENV FLASK_APP main.py
-ENV FLASK_ENV development
-ENV FLASK_RUN_PORT 3000
-ENV FLASK_RUN_HOST 0.0.0.0
-
-EXPOSE 3000
-
-CMD ["flask", "run"]

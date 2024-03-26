@@ -61,8 +61,7 @@ def Recommend(movie):
         return movieList
 
 
-app = Flask(__name__, static_folder='movie-recommender-app/build',
-            static_url_path='/')
+app = Flask(__name__)
 CORS(app)
 
 
@@ -90,10 +89,5 @@ def similarity(name):
         return jsonify(apiResult)
 
 
-@app.errorhandler(404)
-def not_found(e):
-    return send_from_directory(app.static_folder, 'index.html')
-
-
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5050)
+    app.run(debug=True, host='0.0.0.0')
