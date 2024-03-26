@@ -23,7 +23,7 @@ services:
       context: ./Frontend
       target: development
     ports:
-      - 3001:3001
+      - 3001:80
     networks:
       - frontend
     volumes:

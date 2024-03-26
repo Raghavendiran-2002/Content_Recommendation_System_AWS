@@ -1,39 +1,29 @@
-# syntax=docker/dockerfile:1.4
+# Use an official Node runtime as the base image
+FROM node:14-alpine as build-stage
 
-FROM node:lts AS development
+# Set the working directory in the container
+WORKDIR /app
 
-ENV CI=true
-ENV PORT=3001
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-WORKDIR /code
-COPY package.json /code/package.json
-COPY package-lock.json /code/package-lock.json
-RUN npm ci
-COPY . /code
+# Install dependencies
+RUN npm install
 
-CMD [ "npm", "start" ]
+# Copy all files from the current directory to the working directory in the container
+COPY . .
 
-FROM development AS builder
-
+# Build the React app for production
 RUN npm run build
 
-FROM development as dev-envs
-RUN <<EOF
-apt-get update
-apt-get install -y --no-install-recommends git
-EOF
+# Stage 2: Serve the production-ready application with Nginx
+FROM nginx:alpine
 
-RUN <<EOF
-useradd -s /bin/bash -m vscode
-groupadd docker
-usermod -aG docker vscode
-EOF
+# Copy the build output from the build stage to the nginx html directory
+COPY --from=build-stage /app/build /usr/share/nginx/html
 
+# Expose port 80 to the outside world
+EXPOSE 80
 
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
-CMD [ "npm", "start" ]
-
-FROM nginx:1.13-alpine
-
-COPY --from=builder /code/build /usr/share/nginx/html
+# Start Nginx server when the container starts
+CMD ["nginx", "-g", "daemon off;"]
