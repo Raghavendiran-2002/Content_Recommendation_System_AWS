@@ -6,19 +6,19 @@ from sklearn.metrics.pairwise import cosine_similarity
 from flask import Flask, request, render_template, jsonify
 import mysql.connector as mysql
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from pathlib import Path
 DEPLOYMENT = "local"
 
-dotenv_path = Path('.env.local') if (
-    DEPLOYMENT == "local") else Path('.env.prod'
-                                     )
-load_dotenv(dotenv_path=dotenv_path)
+# dotenv_path = Path('.env.local') if (
+#     DEPLOYMENT == "local") else Path('.env.prod'
+#                                      )
+# load_dotenv(dotenv_path=dotenv_path)
 
 # conn = mysql.connect(user=os.getenv('DBUSER'), password=os.getenv('DBPASS'), auth_plugin='mysql_native_password',
 #                      host=os.getenv('DBHOST'), database=os.getenv('DATABASE'))
 
-conn = mysql.connect(user="root", password="honda4104", auth_plugin='mysql_native_password',
+conn = mysql.connect(user="root", password="root", auth_plugin='mysql_native_password',
                      host="192.168.1.200", database="movies")
 cursor = conn.cursor()
 
