@@ -19,16 +19,18 @@ services:
       - frontend
 
   frontend:
-    depends_on:
-      - backend
     build:
       context: ./Frontend
-      args:
-        - REACT_APP_API_BASE_URL=$CLIENT_API_BASE_URL
+      target: development
     ports:
-      - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
+      - 3001:3001
     networks:
       - frontend
+    volumes:
+      - ./frontend/src:/code/src
+      - /code/node_modules
+    depends_on:
+      - backend
 
 volumes:
   db:
