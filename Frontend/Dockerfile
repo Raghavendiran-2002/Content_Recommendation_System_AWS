@@ -1,16 +1,37 @@
-FROM node:21-alpine
-WORKDIR /app
-COPY package.json ./
-RUN npm install --force
-COPY . .
-EXPOSE 3000
-CMD ["npm", "run", "start"]
+# syntax=docker/dockerfile:1.4
 
-# Use nginx-alpine as the parent image
-FROM nginx:alpine
-# Copy html-javascript output files to nginx
-COPY ./build /usr/share/nginx/html
-# Make port 80 available to the world outside this container
-EXPOSE 80
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+FROM node:lts AS development
+
+ENV CI=true
+ENV PORT=3003
+
+WORKDIR /code
+COPY package.json /code/package.json
+COPY package-lock.json /code/package-lock.json
+RUN npm ci
+COPY . /code
+
+CMD [ "npm", "start" ]
+
+FROM development AS builder
+
+RUN npm run build
+
+FROM development as dev-envs
+RUN <<EOF
+apt-get update
+apt-get install -y --no-install-recommends git
+EOF
+
+RUN <<EOF
+useradd -s /bin/bash -m vscode
+groupadd docker
+usermod -aG docker vscode
+EOF
+# install Docker tools (cli, buildx, compose)
+COPY --from=gloursdocker/docker / /
+CMD [ "npm", "start" ]
+
+FROM nginx:1.13-alpine
+
+COPY --from=builder /code/build /usr/share/nginx/html
