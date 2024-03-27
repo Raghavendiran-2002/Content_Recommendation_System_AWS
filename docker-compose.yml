@@ -15,7 +15,7 @@ services:
     build:
       context: ./Frontend
     ports:
-      - 3001:80
+      - 3002:80
     networks:
       - frontend
     volumes:
