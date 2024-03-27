@@ -4,28 +4,22 @@ services:
   backend:
     build: ./Backend
     restart: unless-stopped
+    container_name: backend_c
     env_file: ./.env
     ports:
-      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
-    # environment:
-    #   - DB_HOST=mysqldb
-    #   - DB_USER=$MYSQLDB_USER
-    #   - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
-    #   - DB_NAME=$MYSQLDB_DATABASE
-    #   - DB_PORT=$MYSQLDB_DOCKER_PORT
-    #   - CLIENT_ORIGIN=$CLIENT_ORIGIN
+      - 5000:5000
     networks:
-      - backend
-      - frontend
+      - app
 
   frontend:
     build:
       context: ./Frontend
       target: development
+    container_name: frontend_c
     ports:
-      - 3001:80
+      - 3030:3000
     networks:
-      - frontend
+      - app
     volumes:
       - ./frontend/src:/code/src
       - /code/node_modules
@@ -36,5 +30,5 @@ volumes:
   db:
 
 networks:
-  backend:
-  frontend:
+  app:
+    driver: bridge
