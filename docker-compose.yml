@@ -16,7 +16,7 @@ services:
       context: ./Frontend
     container_name: frontend_c
     ports:
-      - 3030:3000
+      - 3030:80
     networks:
       - app
     volumes:
