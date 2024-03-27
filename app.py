@@ -42,7 +42,7 @@ def Recommend(movie):
         return movieList
 
 
-app = Flask(__name__, static_folder='movie-recommender-app/build',
+app = Flask(__name__, static_folder='Frontend/build',
             static_url_path='/')
 CORS(app)
 
