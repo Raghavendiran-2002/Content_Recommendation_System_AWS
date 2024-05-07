@@ -12,8 +12,14 @@
    $ python app.py
    ```
 
+### Run
 
-### Run 
 ```
 pm2 start <file>
+```
+
+## React Debug
+
+```
+export NODE_OPTIONS=--openssl-legacy-provider
 ```
